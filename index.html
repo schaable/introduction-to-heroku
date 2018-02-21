@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Heroku basics</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/white.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+  <!-- Overrided styles -->
+  <link rel="stylesheet" href="styles.css">
+  
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<img data-src="images/heroku-logo.svg">
+			</section>
+			<section>
+        <img data-src="images/what-is-heroku.jpg">
+      </section>
+      <section>
+        <h3>Language support</h3>
+        <img data-src="images/languages.jpg">
+      </section>
+      <section>
+        <h2>But... how it works?</h2>
+        <img data-src="images/grandma-finds-the-internet.jpg">
+      </section>
+      <section>
+        <div class="box-group">
+          <div class="box green">APP</div>
+          <div>=</div>
+          <div class="box blue">SOURCE<br />CODE</div>
+          <div>+</div>
+          <div class="box orange">DEPENDENCY<br />DESCRIPTION</div>
+          <div class="fragment" data-fragment-index="1">+</div>
+          <div class="box purple fragment" data-fragment-index="1">PROCFILE</div>
+        </div>
+        <br />
+        <br />
+        <pre class="fragment" data-fragment-index="2"><code data-trim>
+          web: java -jar lib/foobar.jar $PORT
+          queue: java -jar lib/queue-processor.jar
+        </code></pre>
+      </section>
+      <section>
+        <h3>Deployment methods</h3>
+        <ul>
+          <li>Git</li>
+          <pre class="fragment" data-fragment-index="1"><code data-trim>
+            $ git push heroku master
+          </code></pre>
+          <li>Github integration</li>
+          <li>Dropbox Sync</li>
+          <li>Heroku API</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Build process</h3>
+        <div>
+          <div class="half-width">
+            Language specific
+          </div>
+          <div class="half-width">
+            <ol>
+              <li class="fragment" data-fragment-index="1">Retriving dependencies</li>
+              <li class="fragment" data-fragment-index="2">Creating assets</li>
+            </ol>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="box-group fragment" data-fragment-index="3">
+          <div class="box-group vertical small">
+            <div class="box">SOURCE CODE</div>
+            <div>+</div>
+            <div class="box purple">DEPENDENCIES</div>
+            <div>+</div>
+            <div class="box orange">OUTPUT OF BUILD</div>
+            <div>+</div>
+            <div class="box green">LANGUAGE/FRAMEWORK</div>
+          </div>
+          <div>=></div>
+          <div>BUILDPACK</div>
+          <div>=></div>
+          <div>SLUG</div>
+        </div>
+      </section>
+      <section>
+        <section>
+          <img data-src="images/heroku-dynos.png">
+        </section>
+        <section>
+          <h4>Isolated, virtualized Unix containers, that provide the environment required to run an application</h4>
+        </section>
+        <section>
+          <pre><code data-trim>
+            $ heroku ps:scale web=3 queue=2
+          </code></pre>
+          <br />
+          <div class="fragment" data-fragment-index="1">
+            Dyno formation: total number of currently-executing dynos
+          </div>
+        </section>
+        <section>
+          <h4>One-off dynos</h4>
+          <p>Temporary dynos that run with their input/output attached to your local terminal</p>
+          <pre class="fragment" data-fragment-index="1"><code data-trim>
+            $ heroku run bash
+          </code></pre>
+        </section>
+      </section>
+      <section>
+        <h3>Config</h3>
+        <ul>
+          <li>Everything that is likely to vary between environments</li>
+          <li>Stored outside the app in <strong>config vars</strong></li>
+        </ul>
+      </section>
+      <section>
+        <h3>Add-ons</h3>
+        <h4>Cloud services that can be attached to an app extending its functionality</h4>
+        <img data-src="images/addons-provision.png">
+      </section>
+      <section>
+        <h3>Release</h3>
+        <div class="box-group fragment" style="justify-content: center; border: 3px solid black;">
+          <div class="box blue">SLUG</div>
+          <div>+</div>
+          <div class="box orange">CONFIG</div>
+          <div>+</div>
+          <div class="box green">ADD-ONS</div>
+        </div>
+        <p class="fragment">Heroku maintains an append-only ledger of releases you make</p>
+      </section>
+      <section>
+        <h3>Logging and monitoring</h3>
+        <p class="fragment">Heroku treats logs as streams of time-stamped events</p>
+        <p class="fragment">Logplex automatically collates log entries from all the running dynos and Heroku platform components, providing a single source of activity</p>
+        <pre class="fragment"><code data-trim>
+          $ heroku logs
+          2013-02-11T15:19:10+00:00 heroku[router]: at=info method=GET path=/articles/custom-domains host=mydemoapp.heroku.com fwd=74.58.173.188 dyno=web.1 queue=0 wait=0ms connect=0ms service=1452ms status=200 bytes=5783
+          2013-02-11T15:19:10+00:00 app[web.2]: Started GET "/" for 1.169.38.175 at 2013-02-11 15:19:10 +0000
+          2013-02-11T15:19:10+00:00 app[web.1]: Started GET "/" for 2.161.132.15 at 2013-02-11 15:20:10 +0000
+        </code></pre>
+      </section>
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+	</script>
+</body>
+
+</html>

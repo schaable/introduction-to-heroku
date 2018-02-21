@@ -1,0 +1,93 @@
+/**********************/
+/** Overrided Styles **/
+/**********************/
+
+.reveal section {
+  color: #606060;
+}
+
+.reveal section img { 
+  background: none; 
+  border: none; 
+  box-shadow: none; 
+}
+
+.reveal section h1, 
+.reveal section h2, 
+.reveal section h3, 
+.reveal section h4, 
+.reveal section h5, 
+.reveal section h6 { 
+  color: #79589F;
+  text-transform: none;
+}
+
+.reveal section ul pre { 
+  width: 100%; 
+}
+
+/*******************/
+/** Custom Styles **/
+/*******************/
+
+.reveal section .box-group {
+  display: flex;
+  align-items: center;
+}
+
+.reveal section .box-group.vertical {
+  flex-direction: column;
+}
+
+.reveal section .box-group>div {
+  margin: 15px;
+}
+
+.reveal section .box-group.small>div {
+  margin: 0px;
+  font-size: 50%;
+}
+
+.reveal section .box {
+  border: 3px solid;
+  padding: 20px;
+  vertical-align: middle;
+  border-radius: 6px;
+}
+
+.reveal section .small .box {
+  padding: 3px;
+}
+
+.reveal section .box.green {
+  border-color: green;
+  color: green;
+  background-color: #c1ffc1;
+}
+
+.reveal section .box.blue {
+  border-color: #1d3aba;
+  color: #1d3aba;
+  background-color: #96a9ff;
+}
+
+.reveal section .box.orange {
+  border-color: orangered;
+  color: orangered;
+  background-color: #ffcfa5;
+}
+
+.reveal section .box.purple {
+  border-color: purple;
+  color: purple;
+  background-color: #fbb7ff;
+}
+
+.reveal section .half-width {
+  width: 50%;
+  float: left;
+}
+
+.clearfix {
+  clear: both;
+}
